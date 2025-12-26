@@ -1,5 +1,6 @@
 from enum import Enum
 import turtle
+import os
 
 class Color(Enum):
    RED = "Red"
@@ -25,7 +26,7 @@ class Abstract_Card:
       self.type = type
 
    def draw_card(self, draw):
-         draw.speed("fastest")
+         draw.speed("slowest")
          length = 100
          width = 150
 
@@ -38,14 +39,26 @@ class Abstract_Card:
 
          draw.forward(width)
          draw.left(90)
-         draw.write(self.type.value) 
+        
          draw.forward(length)
          draw.left(90)
 
          draw.forward(width)
 
          draw.end_fill()
-         turtle.resetscreen()
+
+         draw.color("white")
+         draw.penup()
+         draw.goto(length/2, width/2 - 10)
+         draw.pendown()
+         draw.write(self.type.value, align = "center", font=("Arial", 10, "normal"))
+
+         save_path = os.path.join(os.getcwd(), "uno/src/assets/Cards/Generated_Cards", f"{self.type.value}.ps")
+         os.makedirs(os.path.dirname(save_path), exist_ok=True)
+
+         turtle.save(save_path, overwrite=True)
+
+         turtle.resetscreen()     
 
 class Wild_Card(Abstract_Card):
    pass
@@ -70,13 +83,23 @@ class Colored_Card(Abstract_Card):
 
          draw.forward(width)
          draw.left(90)
-         draw.write(self.type.value)
+         
          draw.forward(length)
          draw.left(90)
 
          draw.forward(width)
-
          draw.end_fill()
+
+         draw.penup()
+         draw.goto(length/2, width/2 - 20)
+         draw.pendown()
+         draw.write(self.type.value, align = "center", font=("Arial", 15, "normal"))
+
+         save_path = os.path.join(os.getcwd(), "uno/src/assets/Cards/Generated_Cards", f"{self.color}_{self.type.value}.ps")
+         os.makedirs(os.path.dirname(save_path), exist_ok=True)
+
+         turtle.save(save_path, overwrite=True)
+         
          turtle.resetscreen()
 
 class Numbered_Card(Colored_Card):
@@ -89,7 +112,7 @@ class Numbered_Card(Colored_Card):
       self.color = color
    
    def draw_card(self, draw):         
-         draw.speed("slowest")
+         draw.speed("fastest")
          length = 100
          width = 150
 
@@ -102,13 +125,23 @@ class Numbered_Card(Colored_Card):
 
          draw.forward(width)
          draw.left(90)
-         draw.write(self.number) 
          draw.forward(length)
          draw.left(90)
 
          draw.forward(width)
 
          draw.end_fill()
+
+         draw.penup()
+         draw.goto(length/2, width/2 - 20)
+         draw.pendown()
+         draw.write(self.number, align = "center", font=("Arial", 40, "normal"))
+         
+         save_path = os.path.join(os.getcwd(), "uno/src/assets/Cards/Generated_Cards", f"{self.color}_{self.number}.ps")
+         os.makedirs(os.path.dirname(save_path), exist_ok=True)
+
+         turtle.save(save_path, overwrite=True)
+
          turtle.resetscreen()
 
 
@@ -162,6 +195,5 @@ def draw_card():
    draw = turtle.Turtle()
    for card in card_list:
       card.draw_card(draw)
-      
-     
+    
 draw_card()
