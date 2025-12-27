@@ -52,13 +52,12 @@ class Abstract_Card:
          draw.goto(length/2, width/2 - 10)
          draw.pendown()
          draw.write(self.type.value, align = "center", font=("Arial", 10, "normal"))
-
+         
          save_path = os.path.join(os.getcwd(), "uno/src/assets/Cards/Generated_Cards", f"{self.type.value}.ps")
          os.makedirs(os.path.dirname(save_path), exist_ok=True)
 
          turtle.save(save_path, overwrite=True)
-
-         turtle.resetscreen()     
+         turtle.resetscreen()         
 
 class Wild_Card(Abstract_Card):
    pass
@@ -136,14 +135,13 @@ class Numbered_Card(Colored_Card):
          draw.goto(length/2, width/2 - 20)
          draw.pendown()
          draw.write(self.number, align = "center", font=("Arial", 40, "normal"))
-
+         
          save_path = os.path.join(os.getcwd(), "uno/src/assets/Cards/Generated_Cards", f"{self.color}_{self.number}.ps")
          os.makedirs(os.path.dirname(save_path), exist_ok=True)
 
          turtle.save(save_path, overwrite=True)
-
          turtle.resetscreen()
-
+         
 
 # max 7 cards per player,
 # 108 total cards
