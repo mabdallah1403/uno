@@ -136,7 +136,7 @@ class Numbered_Card(Colored_Card):
          draw.goto(length/2, width/2 - 20)
          draw.pendown()
          draw.write(self.number, align = "center", font=("Arial", 40, "normal"))
-         
+
          save_path = os.path.join(os.getcwd(), "uno/src/assets/Cards/Generated_Cards", f"{self.color}_{self.number}.ps")
          os.makedirs(os.path.dirname(save_path), exist_ok=True)
 
