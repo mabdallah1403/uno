@@ -7,7 +7,8 @@ class PlayerHand {
         this.cards = [
             cardImages['../assets/Cards/Generated_Cards/Blue_2.png'].default,
             cardImages['../assets/Cards/Generated_Cards/Red_5.png'].default,
-            cardImages['../assets/Cards/Generated_Cards/Green_Reverse.png'].default
+            cardImages['../assets/Cards/Generated_Cards/Green_Reverse.png'].default,
+            cardImages['../assets/Cards/Generated_Cards/+4 Swap Color.png'].default
         ];
         this.player_id = player_id;
     }
@@ -17,11 +18,16 @@ class PlayerHand {
     }
 
     get_cards(): string[] {
-        return this.cards;
+        return this.cards; // return a copy instead of the actual array RETURN MUTABLE OBJECTS
     }
 
-    update_hand(newCards: string[]) {
-        // when a card is played, update the hand
+    remove_card(index: number) {
+        // add logic to check that played card matches previous card, 
+        this.cards.splice(index, 1);
+    }
+
+    getCardFromIndex(index: number) {
+        return this.cards[index];
     }
 
     draw_card(card: string) {
