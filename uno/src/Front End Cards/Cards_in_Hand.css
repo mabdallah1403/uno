@@ -14,14 +14,41 @@
   margin-bottom: -400px; 
 }
   */
-.button_resize {
+.play_button {
   transform: translateY(-500px);
   transform: translateX(100px);
   transform: scale(500%); 
+ 
+}
+
+.draw_button {
+  position: auto;
+  top: 400px;
+  left: 50%;
+  transform: translateX(-50%);
+  transform: scale(200%);
+}
+
+.uno_button {
+  position: auto;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-110%);
+  transform: scale(150%);
 }
 
 .card_resize {  
   transform: scale(30%);
+}
+
+.top_card_image {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: auto;
+  z-index: 10;
 }
 
 .card_image:hover {

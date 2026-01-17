@@ -4,36 +4,40 @@ import { useState } from 'react';
 import './Cards_in_Hand.css'
 
 function CardsInHand() {
-  const [selectedCardState, setSelectedCardState] = useState<number>() // initial state then setter [initial val, setter]
+  const [selectedCardState, setSelectedCardState] = useState<string>() // initial state then setter [initial val, setter]
   const [topCardState, setTopCardState] = useState<string>()
+  const [playerCards, setPlayerCards] = useState<Map<string,string>>(player.get_cards());
 
-  const cards = player.get_cards();
-  function PlayButtonDisabled() {
-    return (
-      // if (swap color or +4 swap color) {
-      // return false;}
-
-      //if(topCardState === card image number color ) // parse file name to find what card it is and compare to top card
-
-      // top card doesn't match color or number of selected card
-      // selected card isn't swap color or +4 swap color
-      // color is selcted on swap color
-      // button isn't disabled if topCardState is undefined
-      true
-    ) 
+  function PlayButtonDisabled() { // true means disabled, false means enabled
+    if (topCardState === undefined) {
+      return false;
+    }
+    if (selectedCardState === undefined) { 
+      return true;
+    }
+    if (topCardState.includes(selectedCardState.split('_')[0]) || topCardState.includes(selectedCardState.split('_')[1])) {
+      return false;
+    }
+    if (selectedCardState.includes("+4") ||selectedCardState.includes("Swap")) {
+      return false;
+    }
+    return true;
+      // color is selcted on swap color 
   }
 
   function PlayCard() {
     return (
-      <div className="button_resize">
-    <button disabled={(selectedCardState === undefined)} onClick={() => {
-      if (selectedCardState !== undefined) {
-        setTopCardState(player.getCardFromIndex(selectedCardState)) // top card is set from the played hand
-        // print the top card image in the middle
-        player.remove_card(selectedCardState)
-      } 
-      setSelectedCardState(undefined)
-
+      <div className="play_button">
+        <button disabled={(selectedCardState === undefined) || PlayButtonDisabled()} onClick={() => {
+          if (selectedCardState !== undefined) {
+            setTopCardState(player.getCardFromName(selectedCardState));// top card is set from the played hand 
+            player.remove_card(selectedCardState);
+            setPlayerCards(new Map(player.get_cards()));
+          }
+          if (selectedCardState?.includes("Swap")) {
+            
+          }    
+          setSelectedCardState(undefined);
     }
   }
     >
@@ -42,19 +46,59 @@ function CardsInHand() {
     </div>
     )
   }
+
+  function TopCard() {
+    return (
+      <img src={topCardState} className="top_card_image" draggable={false} />
+    )
+  }
+
+  function DrawCard() {
+    return (
+      <div className="draw_button">
+        <button onClick={() => {
+          player.draw_card();   
+          setPlayerCards(new Map(player.get_cards()));
+        }}>
+          Draw
+        </button>
+      </div>
+    )
+  }
+
+  function Uno() { 
+    return (
+      <div className="uno_button">
+        <button disabled={playerCards.size !== 1} onClick={() => {     
+            alert("UNO!");
+        }}>
+          UNO
+      
+      </button>
+      </div>
+    )
+  }
+
   return (
     <div className="card_resize">
-      {cards.map((cardUrl, index) => ( // generated didn't write this line, may need to change "root" on previous line
+      {[...playerCards].map(([cardName, cardURL]) => ( // generated didn't write this line, may need to change "root" on previous line
         <button onClick={() => {
-          setSelectedCardState(index)
+          setSelectedCardState(cardName);
         }
         }>
-          <img key={index} src={cardUrl} alt={`Card ${index + 1}`} className="card_image" draggable={false} /> 
+          <img key={cardName} src={cardURL} alt={`Card ${cardName}`} className="card_image" draggable={false} /> 
         </button>
 
       ))}
 
+      
+      <TopCard></TopCard>
+      <DrawCard></DrawCard>
+      <Uno></Uno>
       <PlayCard></PlayCard>
+      
+      
+
     </div>
   );
 }
